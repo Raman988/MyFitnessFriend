@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
+
+
  
+{% block style %}
+#btn:hover {
+    color: brown;
+    background-color: #fff;
+
+    }
+{%endblock%}
 {% block js %}
 
         window.onload = () => {
@@ -70,8 +79,8 @@
         <br><br>
         
   
-        <button id="btn">Calculate</button>
-  
+        {% comment %} <button id="btn">Calculate</button> {% endcomment %}
+        <button class="btn btn-success" type="submit" id ="btn">Calculate</button>
         <div id="result"></div>
     </div>
     {% endblock %}

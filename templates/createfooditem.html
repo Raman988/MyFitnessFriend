@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{%block title%}
+Add Food Item
+{% endblock %}
 {% block style%}
 		body,
 		html {
@@ -8,7 +11,7 @@
             height: 100%;
 		}
 		.user_card {
-			width: 350px;
+			width: 500px;
 			margin-top: auto;
 			margin-bottom: auto;
 			position: relative;
@@ -35,7 +38,7 @@
 			padding: 0 2rem;
 		}
 		.input-group-text {
-            background: #f7ba5b !important;
+            background: #2e928f!important;
 			color: white !important;
 			border: 0 !important;
 			border-radius: 0.25rem 0 0 0.25rem !important;
@@ -66,7 +69,7 @@
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
-					<h3 id="form-title">REGISTER ACCOUNT</h3>
+					<h3 id="form-title">Add Food Item...</h3>
 				</div>
 				<div class="d-flex justify-content-center form_container">
 
@@ -74,34 +77,49 @@
 						{% csrf_token %}
 						<div class="input-group mb-3">
 							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa fa-user"></i> </span>
+								<span class="input-group-text"><i class="fa fa-image"></i> </span>
 							</div>
 							
-							{{form.username}}
+							{{form.image}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa fa-envelope-square"></i></span>
+								<span class="input-group-text"><i class="fa fa-cutlery"></i></span>
 							</div>
-							{{form.email}}
+							{{form.name}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa fa-key"></i></span>
+								<span class="input-group-text"><i class="fa fa-lemon-o"></i></span>
 							</div>
-							{{form.password1}}
+							{{form.carbs}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa fa-key"></i></span>
+								<span class="input-group-text"><i class="fa fa-lemon-o"></i></span>
 							</div>
-							{{form.password2}}
+							{{form.protein}}
+						</div><div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-lemon-o"></i></span>
+							</div>
+							{{form.category}}
+						</div><div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-folder-o"></i></span>
+							</div>
+							{{form.fats}}
+						</div><div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fa fa-folder-o"></i></span>
+							</div>
+							{{form.calories}}
 						</div>
 
 
 
 				   		<div class="d-flex justify-content-center mt-3 login_container">
-				 			<input class="btn btn-success" type="submit" value="Register Account">
+				 			<input class="btn btn-success" type="submit" value="Add Item">
 				   		</div>
 
 					</form>
@@ -109,11 +127,7 @@
 
 				{{form.errors}}
 				
-				<div class="mt-4">
-					<div class="d-flex justify-content-center links">
-						Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -126,10 +140,11 @@
 
 		//Query All input fields
 		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder='Username..';
-		form_fields[2].placeholder='Email..';
-		form_fields[3].placeholder='Enter password...';
-		form_fields[4].placeholder='Re-enter Password...';
+		form_fields[2].placeholder='Food name..';
+		form_fields[3].placeholder='Carbs...(in gm)';
+		form_fields[4].placeholder='Protein...(in gm)';
+		form_fields[5].placeholder='Fats...(in gm)';
+		form_fields[6].placeholder='Calorie...(in kcal)';
 
 
 		for (var field in form_fields){	

@@ -10,12 +10,15 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .decorators import *
 from django.contrib.auth.models import Group
-# from .filters import fooditemFilter
+from .filters import fooditemFilter
 # Create your views here.
 
 @login_required(login_url='login')
 
 def index(request):
+    food =Food.objects.filter()
+    myfilter = fooditemFilter(request.GET,queryset=food)
+
 
     if request.method == "POST":
         food_consumed = request.POST['food_consumed']
@@ -23,13 +26,13 @@ def index(request):
         user = request.user
         consume = Consume(user=user, food_consumed=consume)
         consume.save()
-        foods = Food.objects.all()
+        foods = myfilter.qs
 
     else:
-        foods = Food.objects.all()
+        foods =myfilter.qs
     consumed_food = Consume.objects.filter(user=request.user)
 
-    return render(request, 'index.html', {'foods': foods, 'consumed_food': consumed_food})
+    return render(request, 'index.html', {'foods': foods, 'consumed_food': consumed_food,'myfilter':myfilter})
 
 @login_required(login_url='login')
 
@@ -97,3 +100,40 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+@login_required(login_url='login')
+# @allowed_users(allowed_roles=['admin'])
+def fooditem(request):
+    breakfast=Category.objects.filter(name='breakfast')[0].food_set.all()
+    bcnt=breakfast.count()
+    lunch=Category.objects.filter(name='lunch')[0].food_set.all()
+    lcnt=lunch.count()
+    dinner=Category.objects.filter(name='dinner')[0].food_set.all()
+    dcnt=dinner.count()
+    snacks=Category.objects.filter(name='snacks')[0].food_set.all()
+    scnt=snacks.count()
+    context={'breakfast':breakfast,
+              'bcnt':bcnt,
+              'lcnt':lcnt,
+              'scnt':scnt,
+              'dcnt':dcnt,
+              'lunch':lunch,
+              'dinner':dinner,
+              'snacks':snacks,
+            }
+    return render(request,'fooditem.html',context)
+
+@login_required(login_url='login')
+# @allowed_users(allowed_roles=['admin'])
+# @unauthorized_user
+
+def createfooditem(request):
+    form = fooditemForm()
+    if request.method == 'POST':
+        form = fooditemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context={'form':form}
+    return render(request,'createfooditem.html',context)  

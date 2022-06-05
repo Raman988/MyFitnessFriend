@@ -61,15 +61,15 @@
             margin-bottom: 5px;
             text-transform: lowercase;
           }
-          
+        
           img {
             border-radius: 5%;
-            width:100%;
-            height:100%;
-            object-fit: cover;
+            width:auto;
+            height:auto;
+            object-fit: auto;
             overflow: hidden;
             aspect-ratio: 5 / 6;
-          }
+          } 
           
           .carousel {
             overflow-x: auto;
@@ -106,7 +106,7 @@
             padding: 30px 10px 0 10px;
           }
           
-          .dots {
+           .dots {
             display: flex;
             justify-content: center;
           }
@@ -123,7 +123,7 @@
           
           .dot:focus {
             outline: 1px solid blue;
-          }
+          }  
           tr:nth-child(even) {
             background-color: rgba(14, 163, 64, 0.4);
           }
@@ -131,6 +131,12 @@
           th:nth-child(even) {
             background-color: rgba(150, 216, 96, 0.87);
           }
+          .input-group-text {
+            background: #f7ba5b !important;
+			color: white !important;
+			border: 0 !important;
+			border-radius: 0.25rem 0 0 0.25rem !important;
+		}
           {% endblock %}
 
 
@@ -155,19 +161,44 @@
             </div>
         </div>
     
-{% comment %} <h1>Image Carousel <span>Using CSS to snap between images</span></h1> {% endcomment %}
+        <br>
+        <div class="row">
+          <div class="col">
+            <div class="card card-body">
+              <form method="get">
+				{% comment %} {{myfilter.form} {% endcomment %}
+        <div class="input-group mb-3" >
+          <div class="input-group-append" >
+            <span class="input-group-text"><i class="fa fa-cutlery"></i></span>
+          </div>
+          {{myfilter.form.name}}
+          <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+        </div>
+        
+		  </form>
+		</div>
+	</div>
+</div>
+<br>
+<h2 style =" color:#203009; font-weight:bold;text-transform:capitalize;font-size:120% ">&nbsp; Add Food Items:</h2>
+
 <div class="carousel">
     {% for food in foods %}
+    
+    <div class="card">
+      <div class="content">
+  {% comment %} </a> {% endcomment %}
 
-  <div class="card">
-    <div class="content">
-      <h2>{{food.name}}</h2>
-      <h3>Unlock your Potential</h3>
-      <p>it just works</p>
+  <h2 style="font-size:110%">{{food.name}} </span></h2>
+  {% comment %} <h3>Unlock your Potential</h3> {% endcomment %}
+  <p> <span style =" color:#538b01; font-weight:bold;text-transform:capitalize; "> Carbs </span> | {{food.carbs}}gm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style =" color:#538b01; font-weight:bold; text-transform:capitalize; "> Fats </span>| {{food.fats}}gm</p>
+      <p><span style =" color:#538b01; font-weight:bold; text-transform:capitalize;"> Calorie </span>| {{food.calories}}kcal &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style =" color:#538b01; font-weight:bold;text-transform:capitalize; ">  Protien</span>| {{food.protein}}gm</p>
+      
+      <a class="link" href="{% url "additem" id=food.id%}">
+        <i class="fa fa-plus-square" aria-hidden="true"style ="font-size:120%"></i>
+    </a>
     </div>
-    <a class="link" href="{% url "additem" id=food.id%}">
-    <img src="https://images.unsplash.com/photo-1589652717521-10c0d092dea9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80" alt="Studious Pomeranian with iPad">
-</a>
+    {% comment %} <img src="{{food.image.get_image_url}}" alt=""> {% endcomment %}
   </div>
   {% endfor %}
 
@@ -355,7 +386,9 @@ let dot = '<button class="dot"></button>';
   for (let i = 0; i < cardCount; i++) {
     $('.dots').append(dot);
   }
-}())
+}()) 
+var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Search For Food Item..';
 
     var table = document.getElementById("table");
     var carbs = 0, protein = 0, fats = 0, calories = 0;
