@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block title%}
+Donate
+{% endblock %}
+{%block style%}
+.input-group-text {
+background: #f7ba5b !important;
+color: white !important;
+border: 0 !important;
+border-radius: 0.25rem 0 0 0.25rem !important;
+
+.carousel .card {
+scroll-snap-align: start;
+display: flex;
+flex-shrink: 0;
+padding: 5px 10px 10px 10px;
+flex-direction: column;
+width: 400px;
+margin: 0 7px;
+background-color: white;
+border-radius: 5%;
+overflow: hidden;
+box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+transition: all .3s cubic-bezier(0,0,.5,1)
+}
+
+.card:hover {
+box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+transform: scale3d(1.01,1.01,1.01)
+}
+
+.carousel .card .content{
+height: 500px;
+padding: 30px 10px 0 10px;
+}
+}
+{% endblock %}
+{%block content%}
+<div class="carousel">
+
+    <div class="card">
+        <div class="content">
+            <div class="center" >
+
+                <h1 style="text-align:center">Please Donate</h1>
+               <br>
+                
+                
+                <div class="center" style="display: flex; justify-content: center;">
+
+                    <form action="" method="get">
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-credit-card-alt"></i></span>
+                            </div>
+                            <input type="text" name="amountdonated" placeholder="Enter the amount you want to donate"
+                                style="margin:-0px;">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-arrow-right"></i></button>
+                    </form>
+
+                </div>
+            </div>
+
+            <br>
+
+
+            <div class="center" style="display: flex;justify-content: center;">
+
+                <div class="form-container">
+                    <!-- <p>You want to donate</p> -->
+                    <p style="font-size:130%; color:#6e6e73;font-weight: 600;">You want to donate :</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amount= Rs {{amount}}</p>
+                    <div class="center" style="display: flex; justify-content: center;">
+                        <button type="submit" id="rzp-button1" class="btn btn-primary">Pay</button>
+                    </div>
+
+                    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                    <script>
+                        var options = {
+                            "key": "{{api_key}}", // Enter the Key ID generated from the Dashboard
+                            "amount": "{{amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise -->
+                            "currency": "INR",
+                            "name": "Acme Corp",
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                            "handler": function (response) {
+                                alert(response.razorpay_payment_id);
+                                alert(response.razorpay_order_id);
+                                alert(response.razorpay_signature)
+                            },
+                            "prefill": {
+                                "name": "Siddhant Gangwar",
+                                "email": "Siddhant@gmail.com",
+                                "contact": "9999999999"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            alert(response.error.code);
+                            alert(response.error.description);
+                            alert(response.error.source);
+                            alert(response.error.step);
+                            alert(response.error.reason);
+                            alert(response.error.metadata.order_id);
+                            alert(response.error.metadata.payment_id);
+                        });
+                        document.getElementById('rzp-button1').onclick = function (e) {
+                            rzp1.open();
+                            e.preventDefault();
+                        }
+                    </script>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+    {% endblock %}

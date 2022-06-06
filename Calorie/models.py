@@ -15,9 +15,7 @@ class Category(models.Model):
 
 class Food(models.Model):
 
-    def __str__(self):
-        return self.name
-    image= models.ImageField(null=True, blank=True)
+   
     name = models.CharField(max_length=100)
     category = models.ManyToManyField(Category)
     carbs = models.FloatField()
@@ -40,3 +38,11 @@ class Consume(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     food_consumed = models.ForeignKey(Food, on_delete=models.CASCADE)
+
+
+
+class Profile(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    calorie_goal = models.FloatField(default="2000")
+
+

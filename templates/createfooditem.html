@@ -62,9 +62,128 @@ Add Food Item
             font-size: xx-large;
             text-align: left;
         }
+		h2 {
+			font-size: 12px;
+			line-height: 1.33337;
+			font-weight: 600;
+			letter-spacing: -.01em;
+			text-transform: uppercase;
+			color: #6e6e73;
+			margin-bottom: 13px;
+		  }
+		img {
+			border-radius: 5%;
+			width:auto;
+			height:auto;
+			object-fit: auto;
+			overflow: hidden;
+			aspect-ratio: 5 / 6;
+		  } 
+		  
+		  .carousel {
+			overflow-x: auto;
+			overflow-y: show;
+			display: flex;
+			scroll-snap-type: x mandatory;
+			scroll-padding: 0 1.5rem;
+			margin: 10px 0 0 0;
+			padding: 10px 0 20px 0;
+		  }
+		  
+		  .carousel .card {
+			scroll-snap-align: start;
+			display: flex;
+			flex-shrink: 0;
+			padding: 5px 10px 10px 10px;
+			flex-direction: column;
+			width: 400px;
+			margin: 0 7px;
+			background-color: white;
+			border-radius: 5%;
+			overflow: hidden;
+			box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+			transition: all .3s cubic-bezier(0,0,.5,1)
+		  }
+		  
+		  .card:hover {
+			box-shadow: 2px 4px 16px rgba(0,0,0,.16);
+			transform: scale3d(1.01,1.01,1.01)
+		  }
+		  
+		  .carousel .card .content{
+			height: 170px;
+			padding: 30px 10px 0 10px;
+		  }
+		  
+		   .dots {
+			display: flex;
+			justify-content: center;
+		  }
+		  
+		  .dot {
+			all: unset;
+			margin-right: 5px;
+			height: 10px;
+			width: 10px;
+			border-radius: 10px;
+			background: gray;
+			margin-top: 10px;
+		  }
+		  
+		  .dot:focus {
+			outline: 1px solid blue;
+		  }  
         {% endblock %}
 
 {%block content%}
+
+{% comment %} <form action="" method="get">
+    <input type="text" name="searchquery" placeholder="Enter Food to search nutrients">
+    <button type="submit" value="search">Search</button>
+</form> {% endcomment %}
+<div class="row">
+          <div class="col">
+            <div class="card card-body">
+              <form action="" method="get">
+				{% comment %} {{myfilter.form} {% endcomment %}
+        <div class="input-group mb-3" >
+          <div class="input-group-append" >
+            <span class="input-group-text"><i class="fa fa-cutlery"></i></span>
+          </div>
+		  <input type="text" name="searchquery" placeholder="Enter Food to search nutrients">
+          <button class="btn btn-primary" type="submit" value="search"><i class="fa fa-search"></i></button>
+        </div>
+        
+		  </form>
+      
+		</div>
+	</div>
+</div>
+<hr>
+<div class="carousel">
+
+{% for i in items %}
+<div class="card">
+	<div class="content">
+
+ <p  style="font-size:130%; color:#6e6e73;text-transform:uppercase;font-weight: 600; ">{{i.name}}<span style =" color:black; text-transform:lowercase;font-size:50% ">  per ({{i.serving_size_g}} gm) serve </span></p>
+ <p><span style =" color:#538b01; font-weight:bold;text-transform:capitalize; "> Fat </span> | {{i.fat_total_g}} gm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <span style =" color:#538b01; font-weight:bold;text-transform:capitalize; "> Calories </span> | {{i.calories}} kcal </p>
+ <p><span style =" color:#538b01; font-weight:bold;text-transform:capitalize; "> Protein</span> | {{i.protein_g}} gm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <span style =" color:#538b01; font-weight:bold;text-transform:capitalize; "> Carbs </span> |  {{i.carbohydrates_total_g}} gm</p>
+ <p></p><hr>
+</div>
+</div>
+
+{% endfor %}
+</div>
+
+
+
+	 
+	 <div class="dots">
+	 </div>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
@@ -75,13 +194,7 @@ Add Food Item
 
 					<form method="POST" action="">
 						{% csrf_token %}
-						<div class="input-group mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa fa-image"></i> </span>
-							</div>
-							
-							{{form.image}}
-						</div>
+						
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fa fa-cutlery"></i></span>
@@ -150,5 +263,32 @@ Add Food Item
 		for (var field in form_fields){	
 			form_fields[field].className += ' form-control'
 		}
+
+
+		const dots = document.querySelector('.dots');
+dots.addEventListener('click', e => {
+  const target = e.target;
+  if (!target.matches('.dot')) {
+	  return;
+  }
+  
+  const index = Array.from(dots.children).indexOf(target);
+  const selector = `.card:nth-child(${index + 1})`;
+  const card = document.querySelector(selector)
+  card.scrollIntoView({
+    behavior: 'smooth',
+    inline: 'start'
+  })
+})
+
+// Used JQuery here, but this could be done with vanilla JS
+let cardCount = $(".carousel").children().length;
+let dot = '<button class="dot"></button>';
+
+(function addDots() {
+  for (let i = 0; i < cardCount; i++) {
+    $('.dots').append(dot);
+  }
+}()) 
 	    {% endblock %}
 

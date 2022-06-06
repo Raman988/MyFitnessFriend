@@ -17,3 +17,15 @@ class createUserForm(UserCreationForm):
     class Meta:
         model=User
         fields=['username','email','password1','password2']
+
+class ProfileUpdateForm(ModelForm):
+    class Meta:
+        model=User
+        fields=['username','email','first_name','last_name']
+
+class ProfileUpdateForm2(ModelForm):
+    class Meta:
+        model=Profile
+        fields=['calorie_goal']
+
+
